@@ -1,0 +1,12 @@
+{{define "main"}}
+  {{range .Posts}}
+    <a href="/blog/post/{{.ID}}" class="post-link">
+      <h2>{{.Title}}</h2>
+    </a>
+
+    <p>{{.Content}}</p>
+    <hr>
+  {{else}}
+    <p>Still no post yet</p>
+  {{end}}
+{{end}}

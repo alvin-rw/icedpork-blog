@@ -1,0 +1,25 @@
+{{define "main"}}
+<form action="/blog/create" method="POST">
+  <div class="form-input">
+    <div>
+      <label>Title</label>
+    </div>
+    <input type="text" name="title" class="title">
+  </div>
+
+  <div class="form-input">
+    <div>
+      <label>Post</label>
+    </div>
+    <textarea name="content" class="content-input"></textarea>
+  </div>
+
+  <div class="form-input">
+    <input type="checkbox" name="published">Publish
+  </div>
+
+  <div class="form-input">
+    <input type="submit" value="Create">
+  </div>
+</form>
+{{end}}

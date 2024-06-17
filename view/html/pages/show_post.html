@@ -1,0 +1,11 @@
+{{define "main"}}
+  {{range .Posts}}
+    <h1>{{.Title}}</h1>
+    <p class="post-details">Last modified: {{.LastUpdated}}</p>
+    <p class="post-details">Created at: {{.CreatedAt}}</p>
+
+    <p>{{.Content}}</p>
+  {{else}}
+    <p>No content found</p>
+  {{end}}
+{{end}}
