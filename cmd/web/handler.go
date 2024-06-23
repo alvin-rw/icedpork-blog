@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -79,8 +80,13 @@ func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 
 	post, err := app.models.PostModel.GetPost(id)
 	if err != nil {
-		app.internalServerErrorResponse(w, err)
-		return
+		if errors.Is(err, data.ErrNotFound) {
+			app.notFoundResponse(w)
+			return
+		} else {
+			app.internalServerErrorResponse(w, err)
+			return
+		}
 	}
 
 	data := templateData{

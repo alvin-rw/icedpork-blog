@@ -2,7 +2,13 @@ package data
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	"time"
+)
+
+var (
+	ErrNotFound error = fmt.Errorf("requested resource could not be found")
 )
 
 type Post struct {
@@ -34,7 +40,11 @@ func (p *PostModel) GetPost(id int) (*Post, error) {
 	)
 
 	if err != nil {
-		return nil, err
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNotFound
+		} else {
+			return nil, err
+		}
 	}
 
 	return &post, nil
