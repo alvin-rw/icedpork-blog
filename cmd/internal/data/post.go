@@ -8,7 +8,8 @@ import (
 )
 
 var (
-	ErrNotFound error = fmt.Errorf("requested resource could not be found")
+	ErrNotFound     error = fmt.Errorf("requested resource could not be found")
+	ErrDeleteFailed error = fmt.Errorf("failed to delete the requested resource")
 )
 
 type Post struct {
@@ -46,6 +47,8 @@ func (p *PostModel) GetPost(id int) (*Post, error) {
 			return nil, err
 		}
 	}
+
+	post.ID = id
 
 	return &post, nil
 }
@@ -99,6 +102,28 @@ func (p *PostModel) Create(post *Post) error {
 	err := p.DB.QueryRow(query, args...).Scan(&post.ID, &post.CreatedAt, &post.LastUpdated)
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (p *PostModel) Delete(id int) error {
+	query := `
+		DELETE FROM posts
+		WHERE id = $1`
+
+	res, err := p.DB.Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return ErrDeleteFailed
 	}
 
 	return nil

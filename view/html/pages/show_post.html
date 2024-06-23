@@ -1,6 +1,9 @@
 {{define "main"}}
   {{range .Posts}}
     <h1>{{.Title}}</h1>
+    <form action="/blog/post/delete/{{.ID}}" method="POST">
+      <input type="submit" value="Delete">
+    </form>
     <p class="post-details">Last modified: {{.LastUpdated}}</p>
     <p class="post-details">Created at: {{.CreatedAt}}</p>
 

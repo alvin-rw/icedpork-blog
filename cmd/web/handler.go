@@ -97,3 +97,21 @@ func (app *application) showPost(w http.ResponseWriter, r *http.Request) {
 
 	app.loadTemplate(w, app.templateCache["show_post.html"], data)
 }
+
+func (app *application) deletePost(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+
+	id, err := strconv.Atoi(params.ByName("id"))
+	if err != nil {
+		app.notFoundResponse(w)
+		return
+	}
+
+	err = app.models.PostModel.Delete(id)
+	if err != nil {
+		app.internalServerErrorResponse(w, err)
+		return
+	}
+
+	http.Redirect(w, r, "/blog", http.StatusSeeOther)
+}
